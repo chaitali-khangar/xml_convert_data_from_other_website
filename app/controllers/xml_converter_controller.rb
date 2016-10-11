@@ -5,15 +5,14 @@ class XmlConverterController < ApplicationController
    base_url = "http://economictimes.indiatimes.com/wealth/insure"
    doc = Nokogiri::HTML(open(base_url))
    result_section = doc.css("#mainContainer").css(".eachStory")
-   rss_feed = "<rss version='2.0'><channel><title>W3Schools Home Page</title><link>http://www.w3schools.com</link><description>RSS Feed</description>"
+   html = ""
    result_section.each do |result|
-   	title_rss = result.css('.story-title').text();
-  	link_rss = base_url+result.css('a').first.attr('href');
-  	description_rss = result.css(".story-des").text();
-  	rss_feed += "<item><title>"+ title_rss+"</title><link>"+ link_rss+"</link><description>"+description_rss+"</description></item>"
+   	title_text = result.css('.story-title').text();
+  	link_text = base_url+result.css('a').first.attr('href');
+  	description_text = result.css(".story-des").text();
+    html += "<div class='panel panel-default'><div class='panel-body'><p><h3>#{title_text}</h3><div>#{description_text}<a href=#{link_text}>  continue..</a></div></p></div></div>"
    end
-   rss_feed += "</channel></rss>"
-   render xml: rss_feed
+   @html = html
  end
  def home
 
